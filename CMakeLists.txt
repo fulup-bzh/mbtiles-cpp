@@ -19,24 +19,24 @@ set(SOURCE_FILES
 #       Examples/example.cpp
 #       Examples/example2.cpp
 
+INCLUDE(FindPkgConfig)
+pkg_check_modules (SQLITE3 REQUIRED sqlite3)
+pkg_check_modules (Protobuf REQUIRED protobuf)
+
 #pull in some helpers
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(FindProtobuf)
 include(FindZLIB)
 
-#find sqlite
-find_package (SQLite3)
-
-
-
-
 
 add_library(mbtilesCpp ${SOURCE_FILES})
+target_include_directories(mbtilesCpp PUBLIC ${CMAKE_CURRENT_LIST_DIR}/Include/vector_tile21)
 target_include_directories(mbtilesCpp PUBLIC ${CMAKE_CURRENT_LIST_DIR}/Include/)
 target_include_directories(mbtilesCpp PUBLIC ${SQLITE3_INCLUDE_DIR})
 target_include_directories(mbtilesCpp PUBLIC ${Protobuf_INCLUDE_DIR})
 target_include_directories(mbtilesCpp PUBLIC ${ZLIB_INCLUDE_DIR})
-TARGET_LINK_LIBRARIES(mbtilesCpp ${SQLITE3_LIBRARY})
+
+TARGET_LINK_LIBRARIES(mbtilesCpp sqlite3)
 TARGET_LINK_LIBRARIES(mbtilesCpp ${PROTOBUF_LIBRARIES})
 TARGET_LINK_LIBRARIES(mbtilesCpp ${ZLIB_LIBRARY})
 

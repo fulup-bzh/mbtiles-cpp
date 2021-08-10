@@ -16,12 +16,14 @@ This software may be redistributed under the MIT license.
 
     sudo apt-get install libsqlite3-dev g++ libprotobuf-dev zlib1g-dev
 
+    # update protobuf file to latest google version
+    wget https://raw.githubusercontent.com/mapbox/vector-tile-spec/master/2.1/vector_tile.proto
+    protoc --cpp_out=Source/vector_tile21/ -I Include/vector_tile21 vector_tile.proto
+    mv Source/vector_tile21/vector_tile.pb.h Include/vector_tile21/vector_tile.pb.h
+    
     mkdir build
-
     cd build
-
     cmake ..
-
     make
 
 Update pbf files
@@ -30,7 +32,6 @@ Update pbf files
 To update the protobuf files, get vector_tile.proto from https://github.com/mapbox/vector-tile-spec, remove the line "option optimize_for = LITE_RUNTIME;", then
 
     mkdir vector_tile21
-
     protoc vector_tile.proto --cpp_out vector_tile21
 
 protobuf lite is avoided because it doesn't contain SerializeToOstream functionality.
